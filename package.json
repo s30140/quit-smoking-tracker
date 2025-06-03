@@ -1,0 +1,12 @@
+{
+  "name": "quit-smoking-tracker",
+  "version": "1.0.0",
+  "description": "A web app to help track your smoking cessation progress",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
