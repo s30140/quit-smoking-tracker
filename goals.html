@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals - Quit Smoking Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Quit Smoking Tracker</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="progress.html">Progress</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="goals.html">Goals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tips.html">Tips</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Set Your Goals</h5>
+                <p class="card-text">Setting specific goals can help keep you motivated on your quit journey.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Short-term Goals</h6>
+                <div class="goal-card">
+                    <div class="goal-title">1 Week Smoke-Free</div>
+                    <div class="goal-description">
+                        - Your sense of smell and taste improve<br>
+                        - Your breathing becomes easier<br>
+                        - Your lung function improves
+                    </div>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-title">1 Month Smoke-Free</div>
+                    <div class="goal-description">
+                        - Your lung function improves by 30%<br>
+                        - Your blood pressure drops<br>
+                        - Your circulation improves
+                    </div>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-title">3 Months Smoke-Free</div>
+                    <div class="goal-description">
+                        - Your lung function improves by 50%<br>
+                        - Your risk of heart attack decreases<br>
+                        - Your energy levels increase
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Long-term Goals</h6>
+                <div class="goal-card">
+                    <div class="goal-title">1 Year Smoke-Free</div>
+                    <div class="goal-description">
+                        - Your risk of heart disease is cut in half<br>
+                        - Your lung cancer risk decreases<br>
+                        - Your risk of stroke decreases
+                    </div>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-title">5 Years Smoke-Free</div>
+                    <div class="goal-description">
+                        - Your risk of stroke is the same as a non-smoker<br>
+                        - Your risk of throat cancer is cut in half<br>
+                        - Your risk of lung cancer decreases
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved data for quick stats
+        function loadData(key) {
+            return JSON.parse(localStorage.getItem(key) || '{}');
+        }
+
+        function updateQuickStats() {
+            const data = loadData('quitData');
+            if (data.quitDate) {
+                const now = new Date();
+                const quitDate = new Date(data.quitDate);
+                const daysSinceQuit = Math.floor((now - quitDate) / (1000 * 60 * 60 * 24));
+                
+                // Add progress indicators to goals
+                const goals = document.querySelectorAll('.goal-card');
+                goals.forEach(goal => {
+                    const title = goal.querySelector('.goal-title').textContent;
+                    let daysTarget = 0;
+                    
+                    if (title.includes('1 Week')) daysTarget = 7;
+                    else if (title.includes('1 Month')) daysTarget = 30;
+                    else if (title.includes('3 Months')) daysTarget = 90;
+                    else if (title.includes('1 Year')) daysTarget = 365;
+                    else if (title.includes('5 Years')) daysTarget = 1825;
+                    
+                    if (daysTarget > 0) {
+                        const progress = Math.min((daysSinceQuit / daysTarget) * 100, 100);
+                        const progressBar = document.createElement('div');
+                        progressBar.className = 'progress mt-2';
+                        progressBar.innerHTML = `
+                            <div class="progress-bar" role="progressbar" style="width: ${progress}%">
+                                ${Math.round(progress)}%
+                            </div>
+                        `;
+                        goal.appendChild(progressBar);
+                    }
+                });
+            }
+        }
+
+        // Update quick stats when page loads
+        updateQuickStats();
+    </script>
+</body>
+</html>
